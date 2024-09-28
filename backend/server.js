@@ -1,28 +1,36 @@
 const express = require("express");
-const chats = require('./data/data');
+const connectDB = require("./config/db"); // MongoDB connection
 const dotenv = require("dotenv");
+const cors = require("cors");
+const colors = require("colors");
+const userRoutes = require("./routes/userRoutes");
+const { notFound, errorHandler } = require("./middleware/errorMiddleware");
+
+dotenv.config(); // Load environment variables from .env file
+
+connectDB(); // Connect to MongoDB
 
 const app = express();
-dotenv.config();
-const cors = require("cors");
 
-app.use(cors());
+app.use(cors()); // Enable CORS
 
+// Middleware to parse JSON bodies (if needed for POST/PUT requests)
+app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
 
+// Root route
 app.get("/", (req, res) => {
   res.send("API is running successfully");
 });
 
-app.get("/api/chats", (req, res) => {
-  res.send(chats);
-});
+app.use("/api/user", userRoutes);
 
-app.get('/api/chats/:id', (req, res) => {
-  // console.log(req.params.id);
-  const singleChat = chats.find((c) => c._id === req.params.id);
-  res.send(singleChat);
-});
 
-app.listen(PORT, console.log(`Server running on port ${PORT}`));
+app.use(notFound)
+app.use(errorHandler)
+
+// Listen on the specified port
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`.yellow.bold);
+});

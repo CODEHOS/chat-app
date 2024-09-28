@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+
 import { Stack, HStack, VStack, FormControl, FormLabel, Input, InputGroup, InputRightElement, Button } from '@chakra-ui/react'
 const Signup = () => {
   const [show, setShow] = useState(false);
@@ -7,10 +8,16 @@ const Signup = () => {
   const [password, setPassword] = useState();
   const [pic, setPic] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
+  const [loading, setLoading] = useState(false);
 
   const handleClick = () => setShow(!show);
 
-  const postDetails = (pic) => {}
+  const postDetails = (pic) => {
+    setLoading(true);
+    if(pic === undefined){
+      return;
+    }
+  }
 
   const submitHandler = () => {}
   return <VStack spacing='5px' color="black">
