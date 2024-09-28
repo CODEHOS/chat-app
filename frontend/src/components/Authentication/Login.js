@@ -10,9 +10,7 @@ const Login = () => {
   const handleClick = () => setShow(!show);
 
   const submitHandler = () => {}
-  return (
-    <div>
-      return <VStack spacing='5px' color="black">
+  return  <VStack spacing='5px' color="black">
 
         <FormControl id='email' isRequired>
           <FormLabel>Email</FormLabel>
@@ -51,15 +49,13 @@ const Login = () => {
           width="100%"
           onClick={() =>{
             setEmail("guest@gmail.com");
-            setPassword("123456");
+            setPassword("123");
           }}
         >
           Get Guest User Credentials
         </Button>
         
     </VStack>
-    </div>
-  )
 }
 
 export default Login
