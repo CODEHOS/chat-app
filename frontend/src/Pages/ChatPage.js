@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/layout";
+import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 import Chatbox from "../components/ChatBox";
 import MyChats from "../components/MyChats";
@@ -7,30 +7,41 @@ import { ChatState } from "../context/ChatProvider";
 
 const Chatpage = () => {
   const [fetchAgain, setFetchAgain] = useState(false);
-  const { user } = ChatState();
+  const { user, selectedChat } = ChatState();
 
   return (
-    <div style={{ width: "100%" }}>
+    <Box width="100%" height="100vh">
       {user && <SideDrawer />}
       <Box 
         display="flex" 
         justifyContent="space-between" 
         w="100%" 
-        h="91.5vh" 
+        h={{ base: "calc(100vh - 60px)", md: "91.5vh" }}
         p="10px"
       >
         {user && (
-          <Box w="30%" mr="10px">
+          <Box 
+            display={{ base: selectedChat ? "none" : "flex", md: "flex" }}
+            flexDirection="column"
+            alignItems="center"
+            w={{ base: "100%", md: "30%" }}
+            mr={{ md: "10px" }}
+          >
             <MyChats fetchAgain={fetchAgain} />
           </Box>
         )}
         {user && (
-          <Box w="70%">
+          <Box 
+            display={{ base: selectedChat ? "flex" : "none", md: "flex" }}
+            flexDirection="column"
+            alignItems="center"
+            w={{ base: "100%", md: "70%" }}
+          >
             <Chatbox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
           </Box>
         )}
       </Box>
-    </div>
+    </Box>
   );
 };
 

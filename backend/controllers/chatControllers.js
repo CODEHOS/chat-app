@@ -144,7 +144,17 @@ const addToGroup = asyncHandler(async (req, res) => {
 });
 const removeFromGroup = asyncHandler(async (req, res) => {
   const { chatId, userId } = req.body;
-  
+
+  // Log the input for debugging
+  console.log("chatId:", chatId, "userId:", userId);
+
+  // Check if the chat exists and the user is part of the chat
+  const chat = await Chat.findById(chatId);
+  if (!chat || !chat.users.includes(userId)) {
+    res.status(400);
+    throw new Error("User not found in the chat");
+  }
+
   const removed = await Chat.findByIdAndUpdate(
     chatId,
     {
@@ -154,13 +164,14 @@ const removeFromGroup = asyncHandler(async (req, res) => {
   )
     .populate("users", "-password")
     .populate("groupAdmin", "-password");
-  
-  if(!removed){
+
+  if (!removed) {
     res.status(400);
     throw new Error("User not removed");
-  }else{
+  } else {
     res.json(removed);
   }
 });
+
 
 module.exports = { accessChat, fetchChats, createGroupChats, renameGroup, addToGroup, removeFromGroup };
